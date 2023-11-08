@@ -19,11 +19,46 @@ To provide a clear understanding of the environment used in this guide, here's a
 
 ## Installation
 
-### Step 1: Install the OpenTelemetry PHP extension (Provide instructions and code snippet for this step)
+### Step 1: Install the OpenTelemetry PHP extension
 
-### Step 2: Install the OpenTelemetry Library (Provide instructions and code snippet for this step)
+The first step is install the OpenTelemetry PHP extension.
+
+The example we are using `pecl` to install the extension. You can see the example inside the Dockerfile.
+
+Install the extension:
+
+```bash
+pecl install opentelemetry
+```
+
+Add extension to php ini file
+
+```bash
+RUN docker-php-ext-enable opentelemetry
+```
+
+### Step 2: Install the OpenTelemetry Library 
+
+Beside the extension. You need to install the SDK package and one or more instrumentation packages.
+
+Install PHP package `open-telemetry/opentelemetry` which already include API / SDK / exporter and more useful package:
+
+```bash
+composer require open-telemetry/opentelemetry
+```
+
+Install Laravel auto instrumentation package
+
+```bash
+composer require composer require open-telemetry/opentelemetry-auto-laravel
+```
+
 
 ### Step 3: Configure OpenTelemetry (Provide detailed instructions and code snippets for this step)
 
 ## Conclusion
 
+
+## Reference
+
+[PHP Automatic Instrumentation](https://opentelemetry.io/docs/instrumentation/php/automatic/)
