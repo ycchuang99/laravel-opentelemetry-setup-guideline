@@ -9,6 +9,8 @@ class ExampleController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
+        info('OpenTelemetry log example', ['request' => $request->method()]);
+
         return response()->json([
             'message' => 'Hello World!',
         ]);
