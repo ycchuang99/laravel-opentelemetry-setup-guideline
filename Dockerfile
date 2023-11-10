@@ -2,7 +2,7 @@ FROM php:8.2-fpm-alpine3.18
 
 ARG APP_ENV
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 RUN set -eux \
     && apk update \
