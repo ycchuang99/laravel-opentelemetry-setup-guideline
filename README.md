@@ -67,7 +67,19 @@ From now you can already start setting you opentelemetry. But if you need someth
 
 ### Step 3: Configure OpenTelemetry 
 
-(Provide detailed instructions and code snippets for this step)
+You can put this config to your php.ini or .env file to automatic instrumentation
+In this example we use env file you can see it in the `.env.example`
+
+```
+OTEL_PHP_AUTOLOAD_ENABLED=true
+OTEL_PHP_INTERNAL_METRICS_ENABLED=true
+OTEL_SERVICE_NAME=laravel-opentelemetry-demo
+OTEL_TRACES_EXPORTER=zipkin
+OTEL_METRICS_EXPORTER=otlp
+OTEL_EXPORTER_ZIPKIN_ENDPOINT=http://zipkin:9411/api/v2/spans
+OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=http://collector:4318/v1/metrics
+OTEL_PROPAGATORS=baggage,tracecontext
+```
 
 ## Conclusion
 

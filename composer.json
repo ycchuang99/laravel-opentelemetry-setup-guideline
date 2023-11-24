@@ -13,6 +13,8 @@
         "open-telemetry/opentelemetry": "^1.0",
         "open-telemetry/opentelemetry-auto-laravel": "^0.0.15",
         "open-telemetry/opentelemetry-auto-psr3": "^0.0.5",
+        "open-telemetry/opentelemetry-auto-psr15": "^1.0",
+        "open-telemetry/opentelemetry-auto-psr18": "^1.0",
         "php-http/httplug": "^2.4"
     },
     "require-dev": {
