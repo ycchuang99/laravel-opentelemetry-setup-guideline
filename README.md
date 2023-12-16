@@ -1,84 +1,99 @@
 # Laravel OpenTelemetry Setup Guideline (Optimized)
 
-In this guide, we'll walk you through setting up OpenTelemetry for Laravel applications, allowing you to collect, process, and export telemetry data for performance insights.
+This guide provides a streamlined approach to setting up OpenTelemetry for your Laravel application, enabling you to effortlessly collect, process, and export telemetry data for valuable performance insights.
 
-To streamline the process and adhere to best practices, we'll focus on auto-instrumentation, avoiding complex manual setup.
+**Focus:**
 
-## Prerequisites
+* **Auto-instrumentation:** Minimal manual configuration for a smooth setup.
+* **Best practices:** Adheres to recommended techniques for efficient data collection.
+* **Docker-friendliness:** Optional Docker configurations for simplified deployment.
 
-Ensure the following prerequisites are installed:
+**Prerequisites:**
 
-- **Laravel**: Have a running Laravel project.
-- **Composer**: Install it following the instructions [here](https://getcomposer.org/).
-- **Docker and Docker Compose** (Optional): Install Docker and Docker Compose from [Docker Installation Guide](https://docs.docker.com/get-docker/) if opting for the Dockerized OpenTelemetry Collector.
+* **Laravel:** Existing Laravel project.
+* **Composer:** Installed following instructions at [https://getcomposer.org/download/](https://getcomposer.org/download/)
+* **Docker and Docker Compose (Optional):** For Dockerized OpenTelemetry Collector, install via [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
 
-Example environment:
-- **PHP Version**: 8.2
-- **Laravel Version**: 10
+**Example Environment:**
 
-## Installation
+* PHP Version: 8.2
+* Laravel Version: 10
 
-### Step 1: Install the OpenTelemetry PHP extension
+**Installation:**
 
-Install the extension via `pecl` inside the Dockerfile:
+**1. OpenTelemetry PHP extension:**
+
+* **Dockerfile:** Install the `opentelemetry` extension via `pecl`:
 
 ```
 pecl install opentelemetry
 RUN docker-php-ext-enable opentelemetry
 ```
 
-### Step 2: Install the OpenTelemetry Library
+* **Non-Docker:** Follow platform-specific extension installation instructions.
 
-Install necessary packages with Composer:
+**2. OpenTelemetry Library:**
+
+* Install necessary packages using Composer:
 
 ```
 composer require open-telemetry/opentelemetry
 composer require open-telemetry/opentelemetry-auto-laravel
 ```
 
-# Additional packages for specific functionalities
+**3. OpenTelemetry Configuration:**
 
-| package name | feature | required |
-| --- | --- | --- |
-| `open-telemetry/opentelemetry` | opentelemetry SDK | true |
-| `open-telemetry/opentelemetry-auto-laravel` | laravel auto instrument | true |
-| `open-telemetry/opentelemetry-auto-psr3` | opentelemetry for log | false |
-| `open-telemetry/opentelemetry-auto-psr15` | for incomming request | false |
-| `open-telemetry/opentelemetry-auto-psr18` | for outgoing request | false |
-| `open-telemetry/opentelemetry-auto-mongodb` | for mongodb query | false |
-| `open-telemetry/opentelemetry-auto-pdo` | for pdo query | false |
-
-### Step 3: Configure OpenTelemetry
-
-Configure OpenTelemetry in `.env` or `php.ini`:
+* Set environment variables or modify `php.ini`:
 
 ```
 OTEL_PHP_AUTOLOAD_ENABLED=true
 OTEL_PHP_INTERNAL_METRICS_ENABLED=true
-OTEL_SERVICE_NAME=laravel-opentelemetry-demo
-OTEL_TRACES_EXPORTER=zipkin
-OTEL_METRICS_EXPORTER=otlp
-OTEL_EXPORTER_ZIPKIN_ENDPOINT=http://zipkin:9411/api/v2/spans
-OTEL_EXPORTER_OTLP_METRICS_ENDPOINT=http://collector:4318/v1/metrics
+OTEL_SERVICE_NAME=your-laravel-app-name
+OTEL_TRACES_EXPORTER=desired-exporter (e.g., zipkin)
+OTEL_METRICS_EXPORTER=desired-exporter (e.g., otlp)
+OTEL_EXPORTER_{exporter}_ENDPOINT=exporter-specific-endpoint-url
 OTEL_PROPAGATORS=baggage,tracecontext
 ```
 
-### Step 4: Setup your Zipkin application
+**4. Additional Packages (Optional):**
 
-Include Zipkin setup in `docker-compose`:
+| Package Name | Feature | Required |
+|---|---|---|
+| `open-telemetry/opentelemetry-auto-psr3` | OpenTelemetry for logs | No |
+| `open-telemetry/opentelemetry-auto-psr15` | Incoming request instrumentation | No |
+| `open-telemetry/opentelemetry-auto-psr18` | Outgoing request instrumentation | No |
+| `open-telemetry/opentelemetry-auto-mongodb` | MongoDB query instrumentation | No |
+| `open-telemetry/opentelemetry-auto-pdo` | PDO query instrumentation | No |
+
+**5. Deployment:**
+
+* **Docker (Optional):** Include Zipkin setup in `docker-compose.yml`:
 
 ```
 zipkin:
-    container_name: zipkin-demo
-    image: openzipkin/zipkin
-    ports:
-      - 9411:9411
+  container_name: zipkin-demo
+  image: openzipkin/zipkin
+  ports:
+    - 9411:9411
 ```
 
-## Conclusion
+* **Manual:** Configure your chosen exporter and tracing backend as needed.
 
-Congratulations on setting up OpenTelemetry for your Laravel application! Refer to the [OpenTelemetry Documentation](https://opentelemetry.io/docs/) for further customization.
+**6. Data Access and Analysis:**
 
-## Reference
+* Utilize your chosen exporter's platform or tool (e.g., Zipkin UI) to access and analyze collected telemetry data.
 
-- [PHP Automatic Instrumentation](https://opentelemetry.io/docs/instrumentation/php/automatic/)
+**Additional Resources:**
+
+* OpenTelemetry Documentation: [https://opentelemetry.io/docs/](https://opentelemetry.io/docs/): [https://opentelemetry.io/docs/](https://opentelemetry.io/docs/)
+* PHP Automatic Instrumentation: [https://opentelemetry.io/docs/instrumentation/php/automatic/](https://opentelemetry.io/docs/instrumentation/php/automatic/): [https://opentelemetry.io/docs/instrumentation/php/automatic/](https://opentelemetry.io/docs/instrumentation/php/automatic/)
+
+**Remember:**
+
+* Adjust environment variables and exporter configurations based on your specific needs and chosen exporters.
+* Refer to the provided resources for detailed instructions and advanced customization options.
+
+By following these steps, you can successfully set up OpenTelemetry in your Laravel application and gain valuable insights into its performance and behavior.
+
+I hope this revised version maintains the clarity and professionalism while keeping the informative library table. Feel free to let me know if you have any further questions!
+
