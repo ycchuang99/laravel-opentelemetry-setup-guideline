@@ -1,4 +1,4 @@
-# Laravel OpenTelemetry Setup Guideline (Optimized)
+# Laravel OpenTelemetry Setup Guideline
 
 This guide provides a streamlined approach to setting up OpenTelemetry for your Laravel application, enabling you to effortlessly collect, process, and export telemetry data for valuable performance insights.
 
