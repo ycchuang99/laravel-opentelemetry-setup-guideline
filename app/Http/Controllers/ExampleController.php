@@ -12,7 +12,12 @@ class ExampleController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        info('OpenTelemetry log example', ['request' => $request->method()]);
+        info('OpenTelemetry log example', [
+            'request' => $request->method(),
+            'url' => $request->url(),
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
 
         $this->getMysqlData();
         $this->sendRequest();
@@ -44,7 +49,7 @@ class ExampleController extends Controller
         );
         $span = $tracer->spanBuilder("span example")->startSpan();
 
-        sleep(1);
+        sleep(1); //do some work (required)
 
         $span->end();
     }

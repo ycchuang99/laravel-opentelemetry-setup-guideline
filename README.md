@@ -96,4 +96,3 @@ zipkin:
 By following these steps, you can successfully set up OpenTelemetry in your Laravel application and gain valuable insights into its performance and behavior.
 
 I hope this revised version maintains the clarity and professionalism while keeping the informative library table. Feel free to let me know if you have any further questions!
-
