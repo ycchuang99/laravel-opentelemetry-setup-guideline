@@ -3,20 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use OpenTelemetry\API\Globals;
+use Psr\Http\Message\ServerRequestInterface;
+use Illuminate\Support\Facades\Http;
 
 class ExampleController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function __construct()
+    {
+    }
+
+    public function index(ServerRequestInterface $request): JsonResponse
     {
         info('OpenTelemetry log example', [
-            'request' => $request->method(),
-            'url' => $request->url(),
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent(),
+            'body' => $request->getParsedBody(),
+            'attributes' => $request->getAttributes(),
         ]);
 
         $this->getMysqlData();
@@ -35,7 +37,7 @@ class ExampleController extends Controller
 
     private function sendRequest(): void
     {
-        Http::get('https://httpbin.org/get');
+        Http::get('http://192.168.0.100:8001/api/example');
     }
 
     private function spanExample(): void
