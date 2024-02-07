@@ -10,6 +10,8 @@ services:
       - .env
     volumes:
       - ./:/var/www/html
+      - /var/www/html/vendor
+    user: 1000:1000   # set the user to the same user as the host
     networks:
       - laravel-opentelemetry-demo
   laravel-nginx:

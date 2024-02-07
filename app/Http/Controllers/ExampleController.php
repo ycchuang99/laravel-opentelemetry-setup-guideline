@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use OpenTelemetry\API\Globals;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Support\Facades\Http;
 
 class ExampleController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        private Post $post
+    ) {
     }
 
     public function index(ServerRequestInterface $request): JsonResponse
@@ -22,7 +23,7 @@ class ExampleController extends Controller
         ]);
 
         $this->getMysqlData();
-        $this->sendRequest();
+        // $this->sendRequest();
         $this->spanExample();
 
         return response()->json([
@@ -32,7 +33,7 @@ class ExampleController extends Controller
 
     private function getMysqlData(): void
     {
-        DB::table('opentelemetry')->get();
+        Post::all();
     }
 
     private function sendRequest(): void
