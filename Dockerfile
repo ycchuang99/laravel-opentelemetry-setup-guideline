@@ -11,7 +11,7 @@ RUN set -eux \
 RUN apk add $PHPIZE_DEPS zlib-dev linux-headers  curl unzip openssl-dev --no-cache
 
 RUN set -eux \
-    && pecl install redis opentelemetry-beta \
+    && pecl install redis opentelemetry \
     && docker-php-ext-install pdo_mysql
 
 RUN docker-php-ext-enable redis pdo_mysql opentelemetry
@@ -26,8 +26,4 @@ RUN set -eux \
         composer install; \
     else \
         composer install --no-dev \
-        && php artisan config:cache \
-        && php artisan event:cache \
-        && php artisan route:cache \
-        && php artisan view:cache; \
     fi
