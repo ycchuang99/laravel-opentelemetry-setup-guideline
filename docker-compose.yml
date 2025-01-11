@@ -22,11 +22,20 @@ services:
       - ./build/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - laravel-opentelemetry-demo
-  zipkin:
-    container_name: zipkin-demo
-    image: openzipkin/zipkin
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+      - ./storage/logs:/var/log/
     ports:
-      - 9411:9411
+      - 1888:1888 # pprof extension
+      - 8888:8888 # Prometheus metrics exposed by the collector
+      - 8889:8889 # Prometheus exporter metrics
+      - 13133:13133 # health_check extension
+      - 4317:4317 # OTLP gRPC receiver
+      - 4318:4318 # OTLP http receiver
+      - 55679:55679 # zpages extension
+      - 9411:9411 # zipkin reciver
     networks:
       - laravel-opentelemetry-demo
 networks:

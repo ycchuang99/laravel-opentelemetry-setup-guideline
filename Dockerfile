@@ -1,17 +1,16 @@
-FROM php:8.2-fpm-alpine3.18
+FROM php:8.4-fpm-alpine3.21
 
 ARG APP_ENV
 
 WORKDIR /var/www/html
 
 RUN set -eux \
-    && apk update \
-    && apk upgrade
+    && apk update
     
 RUN apk add $PHPIZE_DEPS zlib-dev linux-headers  curl unzip openssl-dev --no-cache
 
 RUN set -eux \
-    && pecl install redis opentelemetry-beta \
+    && pecl install redis opentelemetry \
     && docker-php-ext-install pdo_mysql
 
 RUN docker-php-ext-enable redis pdo_mysql opentelemetry

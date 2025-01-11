@@ -1,0 +1,35 @@
+receivers:
+  zipkin:
+    endpoint: 0.0.0.0:9411
+    parse_string_tags: false
+  otlp:
+    protocols:
+      grpc:
+      http:
+  filelog:
+    include: ["/var/log/*.log"]
+    parse_regex: "(?P<timestamp>\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{6}Z)\\s+(?P<level>\\w+)\\s+(?P<message>.*)"
+
+processors:
+  batch:
+
+exporters:
+  otlp:
+    endpoint: tempo-prod-16-prod-au-southeast-1.grafana.net:443
+    headers:
+      authorization: Basic token
+    endpoint: 0.0.0.0:8889
+    namespace: default
+  loki:
+    endpoint: "https://export-endpoint.grafana.net/loki/api/v1/push"
+
+service:
+  pipelines:
+    traces:
+      receivers: [zipkin]
+      processors: [batch]
+      exporters: [otlp]
+    logs:
+      receivers: [filelog]
+      processors: [batch]
+      exporters: [loki]
